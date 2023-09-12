@@ -15,6 +15,7 @@ import com.example.nafasivibao.ui.theme.screens.register.RegisterScreen
 import com.example.nafasivibao.ui.theme.screens.splashscreen.SplashScreen
 
 
+@Suppress("DEPRECATION")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppNavHost(modifier: Modifier= Modifier, navController:NavHostController= rememberNavController(), startDestination:String= ROUTE_LOGIN){

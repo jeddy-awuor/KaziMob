@@ -25,6 +25,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -32,16 +36,20 @@ import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -63,20 +71,36 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.nafasivibao.R
+import com.example.nafasivibao.navigation.ROUTE_ABOUT
+import com.example.nafasivibao.navigation.ROUTE_LOGIN
+import com.example.nafasivibao.navigation.ROUTE_SPLASH
 import androidx.compose.material3.OutlinedButton as OutlinedButton
+
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+
 fun Homescreen(navController: NavHostController) {
     val columnScrollableState = rememberScrollState()
+    var isCardExpanded1 by remember { mutableStateOf(false) }
+    var isCardExpanded2 by remember { mutableStateOf(false) }
+    var isCardExpanded3 by remember { mutableStateOf(false) }
+    var isCardExpanded4 by remember { mutableStateOf(false) }
+    var isCardExpanded5 by remember { mutableStateOf(false) }
+    var expanded by remember { mutableStateOf(true) }
+
+
 
     Column(
         modifier = Modifier
@@ -89,10 +113,11 @@ fun Homescreen(navController: NavHostController) {
             mutableListOf(
                 "Full Stack",
                 "Android Developer"
-            )
-        }
-        Row(modifier = Modifier
-            .background(color = Color.Red)) {
+            ) }
+        Row(
+            modifier = Modifier
+                .background(color = Color.Red)
+        ) {
             SearchBar(
                 query = text,
                 modifier = Modifier
@@ -154,22 +179,9 @@ fun Homescreen(navController: NavHostController) {
                 .verticalScroll(columnScrollableState),
             verticalArrangement = Arrangement.spacedBy(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+        ){
             ElevatedCard(
-                onClick = { /*TODO*/ },
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 30.dp
-                ),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color.Blue,
-                ),
-                modifier = Modifier
-                    .padding(10.dp)
-            ) {
-                TutorialCardContent()
-            }
-            ElevatedCard(
-                onClick = { /*TODO*/ },
+                onClick = { },
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 25.dp
                 ),
@@ -179,95 +191,470 @@ fun Homescreen(navController: NavHostController) {
             ) {
                 Spacer(modifier = Modifier.height(15.dp))
                 Text(
-                    text = "Tutorials", fontSize = 22.sp, fontWeight = FontWeight.Bold,
+                    text = "Title", fontSize = 22.sp, fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(start = 10.dp)
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    text = "Github Code",
+                    text = "Github",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Light,
                     modifier = Modifier.padding(start = 10.dp)
                 )
                 Spacer(modifier = Modifier.height(10.dp))
-                Text(
-                    text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In efficitur enim ligula, non cursus sem mattis a. Mauris fringilla ipsum leo, non cursus magna imperdiet id. Nam fringilla ultrices magna sit amet facilisis. Pellentesque nibh est, accumsan sit amet justo auctor, tincidunt interdum dolor. Nullam dignissim ex id sem efficitur, eu dapibus massa iaculis. Duis interdum mi eget justo tincidunt, quis pretium lectus accumsan. Curabitur non cursus sapien. Duis dictum, nulla et imperdiet fringilla, est magna egestas massa, ut bibendum magna dolor in sem. Pellentesque sed nisi ullamcorper nunc pellentesque sagittis vitae et magna. Proin eu diam finibus, imperdiet ipsum et, tempor libero.\n" +
-                            "\n" +
-                            "Donec pellentesque massa sed velit tristique, sit amet imperdiet risus iaculis. Ut vel dui augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In hac habitasse platea dictumst. Donec eget erat posuere, convallis tortor eu, posuere orci. Cras viverra et libero quis malesuada. Nulla vitae est in tellus aliquet feugiat quis nec diam.\n" +
-                            "\n" +
-                            "Curabitur metus turpis, pharetra at viverra quis, fermentum eget sapien. Curabitur dignissim in urna ut gravida. Curabitur finibus porta nunc id hendrerit. Pellentesque convallis finibus pretium. Nunc bibendum consequat quam, ac congue nulla egestas vel. Fusce tempor neque purus, iaculis rutrum eros dapibus id. Sed ut iaculis odio. Mauris tempor at ante at euismod. Sed ante augue, aliquam sit amet semper sed, tincidunt vel erat. Sed id feugiat ligula. Nulla facilisi. Morbi sollicitudin, eros eu ultrices iaculis, magna ex posuere tellus, nec aliquam nibh turpis id metus. Duis et semper ipsum. Fusce pulvinar elementum ex. Mauris cursus ipsum vel leo tincidunt accumsan.",
-                    softWrap = true,
-                    fontSize = 16.sp,
-                    modifier = Modifier.padding(start = 10.dp)
-                )
+                AnimatedVisibility( visible = isCardExpanded1) {
+                    Column(
+                        modifier = Modifier
+                            .padding(10.dp)
+                    ) {
+                        Text(buildAnnotatedString {
+                            withStyle(
+                                style = SpanStyle(
+                                    color = Color.DarkGray,
+                                    fontSize = 13.sp
+                                )
+                            ) {
+                                append("Description: ")
+                            }
+                            withStyle(
+                                style = SpanStyle(
+                                    color = Color.DarkGray,
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            ) {
+                                append("Bachelor's degree in Computer Science, Software Engineering, or a related field (or equivalent experience).\n" +
+                                        "Proven experience as a Full Stack Developer or similar role.\n" +
+                                        "Proficiency in front-end technologies such as HTML, CSS, JavaScript, and modern JavaScript frameworks (e.g., React, Angular, or Vue.js).\n" +
+                                        "Strong back-end development skills, including server-side languages like Node.js, Python, Ruby, or Java.\n" +
+                                        "Experience with relational and NoSQL databases (e.g., MySQL, PostgreSQL, MongoDB).\n" +
+                                        "Knowledge of RESTful APIs and web services.\n" +
+                                        "Familiarity with cloud platforms and containerization (e.g., AWS, Azure, Docker, Kubernetes).\n" +
+                                        "Version control using Git and familiarity with Git workflows.\n" +
+                                        "Excellent problem-solving and communication skills.\n" +
+                                        "Strong teamwork and collaboration abilities.\n" +
+                                        "Self-motivated and eager to learn new technologies.")
+                            }
+
+                        })
+                    }
+                }
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 10.dp)
+                ) {
+                    Icon(
+                        imageVector = if (isCardExpanded1) Icons.Filled.KeyboardArrowUp else
+                            Icons.Filled.KeyboardArrowDown,
+                        contentDescription = "Arrow Down",
+                        modifier = Modifier
+                            .size(25.dp)
+                            .clickable {
+                                isCardExpanded1 = !isCardExpanded1
+                                isCardExpanded2 = false
+                                isCardExpanded3 = false
+                                isCardExpanded4 = false
+                                isCardExpanded5 = false
+                            },
+                        tint = Color.DarkGray
+                    )
+                }
+
                 Spacer(modifier = Modifier.height(10.dp))
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(10.dp)
                 ) {
-                    OutlinedButton(onClick = { /*TODO*/ }) { Text(text = "Close") }
+                    OutlinedButton(onClick = { navController.navigate(ROUTE_SPLASH) }) { Text(text = "Close") }
                     Spacer(modifier = Modifier.padding(horizontal = 10.dp))
                     Button(onClick = { /*TODO*/ }) { Text(text = "Open") }
                 }
             }
             ElevatedCard(
-                onClick = { /*TODO*/ },
+                onClick = { },
                 elevation = CardDefaults.cardElevation(
-                    defaultElevation = 30.dp
+                    defaultElevation = 25.dp
                 ),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color.Blue,
-                ),
-                modifier = Modifier
-                    .padding(10.dp)
+                    containerColor = Color.Magenta,
+                )
             ) {
-                TutorialCardContent()
+                Spacer(modifier = Modifier.height(15.dp))
+                Text(
+                    text = "Title", fontSize = 22.sp, fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(start = 10.dp)
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "Github",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Light,
+                    modifier = Modifier.padding(start = 10.dp)
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                AnimatedVisibility( visible = isCardExpanded2) {
+                    Column(
+                        modifier = Modifier
+                            .padding(10.dp)
+                    ) {
+                        Text(buildAnnotatedString {
+                            withStyle(
+                                style = SpanStyle(
+                                    color = Color.DarkGray,
+                                    fontSize = 13.sp
+                                )
+                            ) {
+                                append("Description: ")
+                            }
+                            withStyle(
+                                style = SpanStyle(
+                                    color = Color.DarkGray,
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            ) {
+                                append("Bachelor's degree in Computer Science, Software Engineering, or a related field (or equivalent experience).\n" +
+                                        "Proven experience as a Full Stack Developer or similar role.\n" +
+                                        "Proficiency in front-end technologies such as HTML, CSS, JavaScript, and modern JavaScript frameworks (e.g., React, Angular, or Vue.js).\n" +
+                                        "Strong back-end development skills, including server-side languages like Node.js, Python, Ruby, or Java.\n" +
+                                        "Experience with relational and NoSQL databases (e.g., MySQL, PostgreSQL, MongoDB).\n" +
+                                        "Knowledge of RESTful APIs and web services.\n" +
+                                        "Familiarity with cloud platforms and containerization (e.g., AWS, Azure, Docker, Kubernetes).\n" +
+                                        "Version control using Git and familiarity with Git workflows.\n" +
+                                        "Excellent problem-solving and communication skills.\n" +
+                                        "Strong teamwork and collaboration abilities.\n" +
+                                        "Self-motivated and eager to learn new technologies.")
+                            }
+
+                        })
+                    }
+                }
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 10.dp)
+                ) {
+                    Icon(
+                        imageVector = if (isCardExpanded2) Icons.Filled.KeyboardArrowUp else
+                            Icons.Filled.KeyboardArrowDown,
+                        contentDescription = "Arrow Down",
+                        modifier = Modifier
+                            .size(25.dp)
+                            .clickable {
+                                isCardExpanded2 = !isCardExpanded2
+                                isCardExpanded1 = false
+                                isCardExpanded3 = false
+                                isCardExpanded4= false
+                                isCardExpanded5 = false
+                            },
+                        tint = Color.DarkGray
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
+                ) {
+                    OutlinedButton(onClick = { navController.navigate(ROUTE_SPLASH) }) { Text(text = "Close") }
+                    Spacer(modifier = Modifier.padding(horizontal = 10.dp))
+                    Button(onClick = { /*TODO*/ }) { Text(text = "Open") }
+                }
             }
             ElevatedCard(
-                onClick = { /*TODO*/ },
+                onClick = { },
                 elevation = CardDefaults.cardElevation(
-                    defaultElevation = 30.dp
+                    defaultElevation = 25.dp
                 ),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color.Blue,
-                ),
-                modifier = Modifier
-                    .padding(10.dp)
+                    containerColor = Color.Magenta,
+                )
             ) {
-                TutorialCardContent()
+                Spacer(modifier = Modifier.height(15.dp))
+                Text(
+                    text = "Title", fontSize = 22.sp, fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(start = 10.dp)
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "Github",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Light,
+                    modifier = Modifier.padding(start = 10.dp)
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                AnimatedVisibility( visible = isCardExpanded3) {
+                    Column(
+                        modifier = Modifier
+                            .padding(10.dp)
+                    ) {
+                        Text(buildAnnotatedString {
+                            withStyle(
+                                style = SpanStyle(
+                                    color = Color.DarkGray,
+                                    fontSize = 13.sp
+                                )
+                            ) {
+                                append("Description: ")
+                            }
+                            withStyle(
+                                style = SpanStyle(
+                                    color = Color.DarkGray,
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            ) {
+                                append("Bachelor's degree in Computer Science, Software Engineering, or a related field (or equivalent experience).\n" +
+                                        "Proven experience as a Full Stack Developer or similar role.\n" +
+                                        "Proficiency in front-end technologies such as HTML, CSS, JavaScript, and modern JavaScript frameworks (e.g., React, Angular, or Vue.js).\n" +
+                                        "Strong back-end development skills, including server-side languages like Node.js, Python, Ruby, or Java.\n" +
+                                        "Experience with relational and NoSQL databases (e.g., MySQL, PostgreSQL, MongoDB).\n" +
+                                        "Knowledge of RESTful APIs and web services.\n" +
+                                        "Familiarity with cloud platforms and containerization (e.g., AWS, Azure, Docker, Kubernetes).\n" +
+                                        "Version control using Git and familiarity with Git workflows.\n" +
+                                        "Excellent problem-solving and communication skills.\n" +
+                                        "Strong teamwork and collaboration abilities.\n" +
+                                        "Self-motivated and eager to learn new technologies.")
+                            }
+
+                        })
+                    }
+                }
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 10.dp)
+                ) {
+                    Icon(
+                        imageVector = if (isCardExpanded3) Icons.Filled.KeyboardArrowUp else
+                            Icons.Filled.KeyboardArrowDown,
+                        contentDescription = "Arrow Down",
+                        modifier = Modifier
+                            .size(25.dp)
+                            .clickable {
+                                isCardExpanded3 = !isCardExpanded3
+                                isCardExpanded1 = false
+                                isCardExpanded2 = false
+                                isCardExpanded4 = false
+                                isCardExpanded5 = false
+                            },
+                        tint = Color.DarkGray
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
+                ) {
+                    OutlinedButton(onClick = { navController.navigate(ROUTE_SPLASH) }) { Text(text = "Close") }
+                    Spacer(modifier = Modifier.padding(horizontal = 10.dp))
+                    Button(onClick = { /*TODO*/ }) { Text(text = "Open") }
+                }
             }
+            ElevatedCard(
+                onClick = { },
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 25.dp
+                ),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.Magenta,
+                )
+            ) {
+                Spacer(modifier = Modifier.height(15.dp))
+                Text(
+                    text = "Title", fontSize = 22.sp, fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(start = 10.dp)
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "Github",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Light,
+                    modifier = Modifier.padding(start = 10.dp)
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                AnimatedVisibility( visible = isCardExpanded4) {
+                    Column(
+                        modifier = Modifier
+                            .padding(10.dp)
+                    ) {
+                        Text(buildAnnotatedString {
+                            withStyle(
+                                style = SpanStyle(
+                                    color = Color.DarkGray,
+                                    fontSize = 13.sp
+                                )
+                            ) {
+                                append("Description: ")
+                            }
+                            withStyle(
+                                style = SpanStyle(
+                                    color = Color.DarkGray,
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            ) {
+                                append("Bachelor's degree in Computer Science, Software Engineering, or a related field (or equivalent experience).\n" +
+                                        "Proven experience as a Full Stack Developer or similar role.\n" +
+                                        "Proficiency in front-end technologies such as HTML, CSS, JavaScript, and modern JavaScript frameworks (e.g., React, Angular, or Vue.js).\n" +
+                                        "Strong back-end development skills, including server-side languages like Node.js, Python, Ruby, or Java.\n" +
+                                        "Experience with relational and NoSQL databases (e.g., MySQL, PostgreSQL, MongoDB).\n" +
+                                        "Knowledge of RESTful APIs and web services.\n" +
+                                        "Familiarity with cloud platforms and containerization (e.g., AWS, Azure, Docker, Kubernetes).\n" +
+                                        "Version control using Git and familiarity with Git workflows.\n" +
+                                        "Excellent problem-solving and communication skills.\n" +
+                                        "Strong teamwork and collaboration abilities.\n" +
+                                        "Self-motivated and eager to learn new technologies.")
+                            }
+
+                        })
+                    }
+                }
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 10.dp)
+                ) {
+                    Icon(
+                        imageVector = if (isCardExpanded4) Icons.Filled.KeyboardArrowUp else
+                            Icons.Filled.KeyboardArrowDown,
+                        contentDescription = "Arrow Down",
+                        modifier = Modifier
+                            .size(25.dp)
+                            .clickable {
+                                isCardExpanded4 = !isCardExpanded4
+                                isCardExpanded1 = false
+                                isCardExpanded2 = false
+                                isCardExpanded3 = false
+                                isCardExpanded5 = false
+                            },
+                        tint = Color.DarkGray
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
+                ) {
+                    OutlinedButton(onClick = { navController.navigate(ROUTE_SPLASH) }) { Text(text = "Close") }
+                    Spacer(modifier = Modifier.padding(horizontal = 10.dp))
+                    Button(onClick = { /*TODO*/ }) { Text(text = "Open") }
+                }
+            }
+            ElevatedCard(
+                onClick = { },
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 25.dp
+                ),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color.Magenta,
+                )
+            ) {
+                Spacer(modifier = Modifier.height(15.dp))
+                Text(
+                    text = "Title", fontSize = 22.sp, fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(start = 10.dp)
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "Github",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Light,
+                    modifier = Modifier.padding(start = 10.dp)
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                AnimatedVisibility( visible = isCardExpanded5) {
+                    Column(
+                        modifier = Modifier
+                            .padding(10.dp)
+                    ) {
+                        Text(buildAnnotatedString {
+                            withStyle(
+                                style = SpanStyle(
+                                    color = Color.DarkGray,
+                                    fontSize = 13.sp
+                                )
+                            ) {
+                                append("Description: ")
+                            }
+                            withStyle(
+                                style = SpanStyle(
+                                    color = Color.DarkGray,
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            ) {
+                                append("Bachelor's degree in Computer Science, Software Engineering, or a related field (or equivalent experience).\n" +
+                                        "Proven experience as a Full Stack Developer or similar role.\n" +
+                                        "Proficiency in front-end technologies such as HTML, CSS, JavaScript, and modern JavaScript frameworks (e.g., React, Angular, or Vue.js).\n" +
+                                        "Strong back-end development skills, including server-side languages like Node.js, Python, Ruby, or Java.\n" +
+                                        "Experience with relational and NoSQL databases (e.g., MySQL, PostgreSQL, MongoDB).\n" +
+                                        "Knowledge of RESTful APIs and web services.\n" +
+                                        "Familiarity with cloud platforms and containerization (e.g., AWS, Azure, Docker, Kubernetes).\n" +
+                                        "Version control using Git and familiarity with Git workflows.\n" +
+                                        "Excellent problem-solving and communication skills.\n" +
+                                        "Strong teamwork and collaboration abilities.\n" +
+                                        "Self-motivated and eager to learn new technologies.")
+                            }
+
+                        })
+                    }
+                }
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 10.dp)
+                ) {
+                    Icon(
+                        imageVector = if (isCardExpanded5) Icons.Filled.KeyboardArrowUp else
+                            Icons.Filled.KeyboardArrowDown,
+                        contentDescription = "Arrow Down",
+                        modifier = Modifier
+                            .size(25.dp)
+                            .clickable {
+                                isCardExpanded5 = !isCardExpanded5
+                                isCardExpanded1 = false
+                                isCardExpanded2 = false
+                                isCardExpanded3 = false
+                                isCardExpanded4 = false
+                            },
+                        tint = Color.DarkGray
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
+                ) {
+                    OutlinedButton(onClick = { navController.navigate(ROUTE_SPLASH) }) { Text(text = "Close") }
+                    Spacer(modifier = Modifier.padding(horizontal = 10.dp))
+                    Button(onClick = { /*TODO*/ }) { Text(text = "Open") }
+                }
+            }
+
 
         }
 
     }
-}
-
-
-
-@Composable
-fun TutorialCardContent() {
-Column(modifier = Modifier
-    .padding(10.dp),
-    verticalArrangement = spacedBy(10.dp),
-    ) {
-    Text(text = "Tutorials", fontSize = 22.sp, fontWeight = FontWeight.Bold)
-    Text(text = "Github Code", fontSize = 16.sp, fontWeight = FontWeight.Light)
-    Text(text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In efficitur enim ligula, non cursus sem mattis a. Mauris fringilla ipsum leo, non cursus magna imperdiet id. Nam fringilla ultrices magna sit amet facilisis. Pellentesque nibh est, accumsan sit amet justo auctor, tincidunt interdum dolor. Nullam dignissim ex id sem efficitur, eu dapibus massa iaculis. Duis interdum mi eget justo tincidunt, quis pretium lectus accumsan. Curabitur non cursus sapien. Duis dictum, nulla et imperdiet fringilla, est magna egestas massa, ut bibendum magna dolor in sem. Pellentesque sed nisi ullamcorper nunc pellentesque sagittis vitae et magna. Proin eu diam finibus, imperdiet ipsum et, tempor libero.\n" +
-            "\n" +
-            "Donec pellentesque massa sed velit tristique, sit amet imperdiet risus iaculis. Ut vel dui augue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In hac habitasse platea dictumst. Donec eget erat posuere, convallis tortor eu, posuere orci. Cras viverra et libero quis malesuada. Nulla vitae est in tellus aliquet feugiat quis nec diam.\n" +
-            "\n" +
-            "Curabitur metus turpis, pharetra at viverra quis, fermentum eget sapien. Curabitur dignissim in urna ut gravida. Curabitur finibus porta nunc id hendrerit. Pellentesque convallis finibus pretium. Nunc bibendum consequat quam, ac congue nulla egestas vel. Fusce tempor neque purus, iaculis rutrum eros dapibus id. Sed ut iaculis odio. Mauris tempor at ante at euismod. Sed ante augue, aliquam sit amet semper sed, tincidunt vel erat. Sed id feugiat ligula. Nulla facilisi. Morbi sollicitudin, eros eu ultrices iaculis, magna ex posuere tellus, nec aliquam nibh turpis id metus. Duis et semper ipsum. Fusce pulvinar elementum ex. Mauris cursus ipsum vel leo tincidunt accumsan.", fontSize = 16.sp)
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .padding(10.dp)) {
-        OutlinedButton(onClick = { /*TODO*/ }) { Text(text = "Close") }
-        Spacer(modifier = Modifier.padding(horizontal = 10.dp))
-        Button(onClick = { /*TODO*/ }) { Text(text = "Open") }
-    }
-}
 
 }
+
+
+
 
 @Preview
 @Composable

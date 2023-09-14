@@ -8,11 +8,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.mvvm.ui.theme.screens.about.AboutScreen
+import com.example.nafasivibao.BottomNavy
+import com.example.nafasivibao.ui.theme.screens.contactcompany.ContactCompanyScreen
 import com.example.nafasivibao.ui.theme.screens.home.Homescreen
 import com.example.nafasivibao.ui.theme.screens.login.LoginScreen
+import com.example.nafasivibao.ui.theme.screens.postedscreen.PostedScreen
 import com.example.nafasivibao.ui.theme.screens.profile.ProfileScreen
 import com.example.nafasivibao.ui.theme.screens.register.RegisterScreen
 import com.example.nafasivibao.ui.theme.screens.splashscreen.SplashScreen
+import com.example.nafasivibao.ui.theme.screens.viewadded.ViewAddedJobs
 
 
 @Suppress("DEPRECATION")
@@ -29,7 +33,7 @@ fun AppNavHost(modifier: Modifier= Modifier, navController:NavHostController= re
         composable(ROUTE_REGISTER){
             RegisterScreen(navController)
         }
-        composable(ROUTE_PIC){
+        composable(ROUTE_PROFILE){
            ProfileScreen(navController)
         }
         composable(ROUTE_SPLASH){
@@ -38,7 +42,18 @@ fun AppNavHost(modifier: Modifier= Modifier, navController:NavHostController= re
         composable(ROUTE_ABOUT){
             AboutScreen(navController)
         }
-
+        composable(ROUTE_VIEWADDED) {
+           ViewAddedJobs(navController)
+        }
+        composable(ROUTE_VIEWCOMP) {
+            ContactCompanyScreen(navController)
+        }
+        composable(ROUTE_VIEWPOSTED) {
+            PostedScreen(navController)
+        }
+        composable(ROUTE_BOTTOMNAVY) {
+            BottomNavy(navController)
+        }
     }
 
 }

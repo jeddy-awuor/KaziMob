@@ -1,6 +1,8 @@
 package com.example.mvvm.ui.theme.screens.about
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.widget.RatingBar
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,6 +18,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -23,10 +26,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Mail
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.RemoveRedEye
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.PermIdentity
@@ -41,6 +47,7 @@ import androidx.compose.material3.CardDefaults.cardColors
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.OutlinedButton
@@ -60,6 +67,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -72,6 +80,7 @@ import com.example.nafasivibao.navigation.ROUTE_ABOUT
 import com.example.nafasivibao.navigation.ROUTE_HOME
 import com.example.nafasivibao.navigation.ROUTE_PROFILE
 import com.example.nafasivibao.navigation.ROUTE_VIEWADDED
+import com.example.nafasivibao.navigation.ROUTE_VIEWCOMP
 import com.example.nafasivibao.ui.theme.screens.home.Homescreen
 import com.example.nafasivibao.ui.theme.screens.rating.RatingBarWithSnackbar
 import com.example.nafasivibao.ui.theme.screens.rating.RatingScreen
@@ -177,10 +186,11 @@ fun AboutScreen(navController: NavHostController) {
 @Composable
 
 fun TutorialCardContentt() {
+    val context: Context = LocalContext.current
     val columnScrollableState= rememberScrollState()
     Column(
         modifier = Modifier
-            .padding(10.dp)
+            .padding( 10.dp)
             .verticalScroll(columnScrollableState),
     verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
     horizontalAlignment = Alignment.CenterHorizontally
@@ -204,10 +214,28 @@ fun TutorialCardContentt() {
             color = Color.Black)
         Row(modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp)) {
-            OutlinedButton(onClick = { /*TODO*/ }) { Text(text = "Close") }
-            Spacer(modifier = Modifier.padding(horizontal = 10.dp))
-            Button(onClick = { /*TODO*/ }) { Text(text = "Open") }
+            .padding(start = 1.dp)) {
+            OutlinedButton(onClick = {
+                val shareIntent = Intent(Intent.ACTION_SEND)
+
+                shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+
+                shareIntent.type = "text/plain"
+
+                shareIntent.putExtra(Intent.EXTRA_TEXT, "Hey, download this app!")
+
+                context.startActivity(shareIntent)
+            }) {
+                Icon(
+                imageVector = Icons.Default.Mail,
+                contentDescription = null,
+                tint = Color.Black,
+                    modifier = Modifier.size(20.dp)
+                        .offset(x = -5.dp)
+            )
+                Spacer(modifier = Modifier.width(5.dp))
+                Text(text = "Share the app")
+            }
         }
        RatingScreen()
     }

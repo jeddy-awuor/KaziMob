@@ -12,18 +12,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.AlertDialogDefaults.shape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TextFieldDefaults.OutlinedBorderContainerBox
-import androidx.compose.material3.TextFieldDefaults.textFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,15 +33,12 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.nafasivibao.R
-import com.example.nafasivibao.navigation.ROUTE_HOME
+import com.example.nafasivibao.data.AuthViewModel
 import com.example.nafasivibao.navigation.ROUTE_REGISTER
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -58,27 +49,30 @@ fun LoginScreen(navController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color(158, 193, 163)),
+            .background(color = Color(243, 253, 232)),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
-    ) {
+
+
+        ) {
         Spacer(modifier = Modifier.height(25.dp))
         Text(
             text = " Welcome Back ! ",
             fontFamily = FontFamily.Cursive,
-            fontWeight = FontWeight(600),
+            fontWeight = FontWeight(400),
             color = Color.Black,
             fontSize = 35.sp,
         )
         Spacer(modifier = Modifier.height(10.dp))
-        Image(
-            painter = painterResource(id = R.drawable.freelance),
+
+        Image(painter = painterResource(id = R.drawable.people) ,
             contentDescription = "sitting",
             modifier = Modifier.size(220.dp),
         )
+
+
         Spacer(modifier = Modifier.height(15.dp))
-        OutlinedTextField(
-            value = email,
+        OutlinedTextField( value = email,
             label = {
                 Text(
                     text = "Email",
@@ -90,8 +84,9 @@ fun LoginScreen(navController: NavHostController) {
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black,
                 focusedBorderColor = Color(207,239,232,255),
-                unfocusedBorderColor = Color.Black,
             ),
             shape = RoundedCornerShape(25.dp),
             onValueChange = {
@@ -99,34 +94,42 @@ fun LoginScreen(navController: NavHostController) {
             },
         )
         Spacer(modifier = Modifier.height(25.dp))
-        OutlinedTextField(value = password,
+
+        OutlinedTextField(
+            value = password,
             label = {
                 Text(
                     text = "Password",
                     fontFamily = FontFamily.SansSerif,
                     fontWeight = FontWeight(100),
-                    color = Color.Black,
+                    color = Color . Black,
                     fontSize = 20.sp,
                 )
             },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             colors = OutlinedTextFieldDefaults.colors(
-                cursorColor = Color.White,
-                focusedBorderColor = Color(207,239,232,255),
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black,
+                focusedBorderColor = Color(207, 239, 232, 255),
                 unfocusedBorderColor = Color.Black,
             ),
-            onValueChange = {password = it},
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             shape = RoundedCornerShape(25.dp),
+            onValueChange = {
+                password = it
+            },
         )
         Spacer(modifier = Modifier.height(40.dp))
 
 
         Button(
-            onClick = { navController.navigate(ROUTE_HOME)},
+            onClick = {
+                var mylogin = AuthViewModel(navController, context)
+                mylogin.login(email.text, password.text)
+            },
             modifier = Modifier.width(200.dp),
             colors = ButtonDefaults.buttonColors(
                 contentColor = Color.Black,
-                containerColor = Color(18, 201, 204)
+                containerColor = Color(158, 210, 190)
             ),
         ) {
             Text(
@@ -139,11 +142,11 @@ fun LoginScreen(navController: NavHostController) {
         }
         Spacer(modifier = Modifier.height(30.dp))
         Button(
-            onClick = { navController.navigate(ROUTE_REGISTER)},
+            onClick = {   navController.navigate(ROUTE_REGISTER) },
             modifier = Modifier.width(280.dp),
             colors = ButtonDefaults.buttonColors(
                 contentColor = Color.Black,
-                containerColor = Color(226, 241, 242)
+                containerColor = Color(158, 210, 190)
             ),
         ) {
             Text(
@@ -159,13 +162,6 @@ fun LoginScreen(navController: NavHostController) {
                 fontWeight = FontWeight(300),
                 fontSize = 20.sp,
             )
-
-
         }
     }
-}
-@Preview
-@Composable
-fun LogPrev(){
-    LoginScreen(rememberNavController())
 }

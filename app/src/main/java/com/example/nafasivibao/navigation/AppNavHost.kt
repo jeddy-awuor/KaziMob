@@ -36,6 +36,9 @@ fun AppNavHost(modifier: Modifier= Modifier, navController:NavHostController= re
         composable(ROUTE_PROFILE){
            ProfileScreen(navController)
         }
+        composable(ROUTE_UPDATE){
+            ProfileScreen(navController)
+        }
         composable(ROUTE_SPLASH){
             SplashScreen(navController)
         }

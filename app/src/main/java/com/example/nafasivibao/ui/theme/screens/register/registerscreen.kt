@@ -15,11 +15,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TextFieldDefaults.textFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,12 +32,11 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.nafasivibao.R
+import com.example.nafasivibao.data.AuthViewModel
 import com.example.nafasivibao.navigation.ROUTE_LOGIN
 
 
@@ -51,26 +47,33 @@ fun RegisterScreen(navController: NavHostController) {
     var password by remember { mutableStateOf(TextFieldValue("")) }
     var confirmpassword by remember { mutableStateOf(TextFieldValue("")) }
 
-    var context = LocalContext.current
-
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color(242, 103, 34)),
+            .background(Color(243, 253, 232)),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top,
+        verticalArrangement = Arrangement.Top
+
     ) {
-        Spacer(modifier = Modifier.height(25.dp))
+        Spacer(modifier = Modifier.height(20.dp))
+
         Text(
-            text = " Create Your Account! ",
+            text = "  Create Your Account ",
             fontFamily = FontFamily.Cursive,
-            fontWeight = FontWeight(400),
             color = Color.Black,
             fontSize = 35.sp,
         )
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(15.dp))
 
+
+        Image(
+            painter = painterResource(id = R.drawable.freelance),
+            contentDescription = "sitting",
+            modifier = Modifier.size(200.dp)
+        )
         Spacer(modifier = Modifier.height(25.dp))
+
         OutlinedTextField(
             value = email,
             label = {
@@ -84,16 +87,20 @@ fun RegisterScreen(navController: NavHostController) {
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             colors = OutlinedTextFieldDefaults.colors(
-                cursorColor = Color.White,
-                focusedBorderColor = Color(207,239,232,255),
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black,
+                focusedBorderColor = Color(207, 239, 232, 255),
                 unfocusedBorderColor = Color.Black,
             ),
             shape = RoundedCornerShape(25.dp),
             onValueChange = {
                 email = it
             },
-        )
+
+            )
+
         Spacer(modifier = Modifier.height(25.dp))
+
         OutlinedTextField(
             value = password,
             label = {
@@ -107,16 +114,18 @@ fun RegisterScreen(navController: NavHostController) {
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             colors = OutlinedTextFieldDefaults.colors(
-                cursorColor = Color.White,
-                focusedBorderColor = Color(207,239,232,255),
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black,
+                focusedBorderColor = Color(207, 239, 232, 255),
                 unfocusedBorderColor = Color.Black,
             ),
             shape = RoundedCornerShape(25.dp),
             onValueChange = {
                 password = it
             },
-        )
-        Spacer(modifier = Modifier.height(40.dp))
+
+            )
+        Spacer(modifier = Modifier.height(25.dp))
         OutlinedTextField(
             value = confirmpassword,
             label = {
@@ -130,8 +139,9 @@ fun RegisterScreen(navController: NavHostController) {
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             colors = OutlinedTextFieldDefaults.colors(
-                cursorColor = Color.White,
-                focusedBorderColor = Color(207,239,232,255),
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black,
+                focusedBorderColor = Color(207, 239, 232, 255),
                 unfocusedBorderColor = Color.Black,
             ),
             shape = RoundedCornerShape(25.dp),
@@ -144,6 +154,12 @@ fun RegisterScreen(navController: NavHostController) {
 
         Button(
             onClick = {
+                val myregister = AuthViewModel(navController, context)
+                myregister.signup(
+                    email.text.trim(),
+                    password.text.trim(),
+                    confirmpassword.text.trim()
+                )
             },
             colors = ButtonDefaults.buttonColors(
                 contentColor = Color.Black,
@@ -160,7 +176,7 @@ fun RegisterScreen(navController: NavHostController) {
         }
         Spacer(modifier = Modifier.height(20.dp))
         Button(
-            onClick = { navController.navigate(ROUTE_LOGIN)},
+            onClick = { navController.navigate(ROUTE_LOGIN) },
             modifier = Modifier. width(300.dp),
             colors = ButtonDefaults.buttonColors(
                 contentColor = Color.Black,
@@ -180,11 +196,6 @@ fun RegisterScreen(navController: NavHostController) {
                 fontWeight = FontWeight(300),
                 fontSize = 20.sp,
             )
-            }
         }
     }
-@Preview
-@Composable
-fun LogPrev(){
-    RegisterScreen(rememberNavController())
 }

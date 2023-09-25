@@ -53,6 +53,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -80,7 +81,7 @@ fun ProfileScreen(navController: NavHostController) {
     var selectedItemIndex by rememberSaveable {
         mutableStateOf(-1)
     }
-
+    val context = LocalContext.current
     val items = listOf(
         BottomNavigationItem(
             title = ROUTE_HOME,
@@ -184,7 +185,7 @@ fun ProfileScreen(navController: NavHostController) {
                 modifier = Modifier
                     .padding(1.dp)
                     .align(TopEnd)
-                    .size(48.dp) // Adjust the size as needed
+                    .size(48.dp)
                     .offset(x = 23.dp)
                     .offset(y = 2.dp)
                     .border(2.dp, Color.Black, CircleShape)

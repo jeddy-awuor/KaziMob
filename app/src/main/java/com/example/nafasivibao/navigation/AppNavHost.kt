@@ -13,6 +13,8 @@ import com.example.nafasivibao.ui.theme.screens.contactcompany.ContactCompanyScr
 import com.example.nafasivibao.ui.theme.screens.home.Homescreen
 import com.example.nafasivibao.ui.theme.screens.login.LoginScreen
 import com.example.nafasivibao.ui.theme.screens.postedscreen.PostedScreen
+import com.example.nafasivibao.ui.theme.screens.product.AddProductsScreen
+import com.example.nafasivibao.ui.theme.screens.product.ViewProductsScreen
 import com.example.nafasivibao.ui.theme.screens.profile.ProfileScreen
 import com.example.nafasivibao.ui.theme.screens.register.RegisterScreen
 import com.example.nafasivibao.ui.theme.screens.splashscreen.SplashScreen
@@ -40,13 +42,13 @@ fun AppNavHost(modifier: Modifier= Modifier, navController:NavHostController= re
             ProfileScreen(navController)
         }
         composable(ROUTE_SPLASH){
-            SplashScreen(navController)
+            ViewProductsScreen(navController)
         }
         composable(ROUTE_ABOUT){
             AboutScreen(navController)
         }
         composable(ROUTE_VIEWADDED) {
-           ViewAddedJobs(navController)
+          AddProductsScreen(navController)
         }
         composable(ROUTE_VIEWCOMP) {
             ContactCompanyScreen(navController)

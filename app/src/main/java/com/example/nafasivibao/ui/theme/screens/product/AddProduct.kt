@@ -5,8 +5,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -40,8 +44,10 @@ import com.example.nafasivibao.data.productviewmodel
 @Composable
 fun AddProductsScreen(navController: NavHostController) {
     var context = LocalContext.current
+    val columnScrollableState = rememberScrollState()
     Column(modifier = Modifier
         .fillMaxSize()
+        .verticalScroll(columnScrollableState)
         .background(color = Color(243, 253, 232)),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -67,177 +73,220 @@ fun AddProductsScreen(navController: NavHostController) {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        OutlinedTextField(
-            value = productName,
-            onValueChange = { productName = it },
-            label = {
-                Text(text = "Job Title *",
-                    fontFamily = FontFamily.SansSerif,
-                    fontWeight = FontWeight(100),
-                    color = Color.Black,
-                    fontSize = 20.sp,)
-            },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = Color.Black,
-                unfocusedTextColor = Color.Black,
-                focusedBorderColor = Color(207, 239, 232, 255),
-                unfocusedBorderColor = Color.Black,
-            ),
-            shape = RoundedCornerShape(25.dp),
-        )
+            OutlinedTextField(
+                value = productName,
+                onValueChange = { productName = it },
+                label = {
+                    Text(
+                        text = "Job Title *",
+                        fontFamily = FontFamily.SansSerif,
+                        fontWeight = FontWeight(100),
+                        color = Color.Black,
+                        fontSize = 20.sp,
+                    )
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black,
+                    focusedBorderColor = Color(207, 239, 232, 255),
+                    unfocusedBorderColor = Color.Black,
+                ),
+                shape = RoundedCornerShape(25.dp),
+            )
 
-        Spacer(modifier = Modifier.height(25.dp))
+            Spacer(modifier = Modifier.height(25.dp))
 
-        OutlinedTextField(
-            value = productCompany,
-            onValueChange = { productCompany = it },
-            label = {
-                Text(text = "Company *",
-                    fontFamily = FontFamily.SansSerif,
-                    fontWeight = FontWeight(100),
-                    color = Color.Black,
-                    fontSize = 20.sp,)},
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = Color.Black,
-                unfocusedTextColor = Color.Black,
-                focusedBorderColor = Color(207, 239, 232, 255),
-                unfocusedBorderColor = Color.Black,
-            ),
-            shape = RoundedCornerShape(25.dp),
-        )
+            OutlinedTextField(
+                value = productCompany,
+                onValueChange = { productCompany = it },
+                label = {
+                    Text(
+                        text = "Company *",
+                        fontFamily = FontFamily.SansSerif,
+                        fontWeight = FontWeight(100),
+                        color = Color.Black,
+                        fontSize = 20.sp,
+                    )
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black,
+                    focusedBorderColor = Color(207, 239, 232, 255),
+                    unfocusedBorderColor = Color.Black,
+                ),
+                shape = RoundedCornerShape(25.dp),
+            )
 
-        Spacer(modifier = Modifier.height(25.dp))
+            Spacer(modifier = Modifier.height(25.dp))
 
-        OutlinedTextField(
-            value = productLocation,
-            onValueChange = { productLocation = it },
-            label = { Text(text = "Location *",
-                fontFamily = FontFamily.SansSerif,
-                fontWeight = FontWeight(100),
-                color = Color.Black,
-                fontSize = 20.sp, ) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = Color.Black,
-                unfocusedTextColor = Color.Black,
-                focusedBorderColor = Color(207, 239, 232, 255),
-                unfocusedBorderColor = Color.Black,
-            ),
-            shape = RoundedCornerShape(25.dp),
-        )
-        Spacer(modifier = Modifier.height(25.dp))
-        OutlinedTextField(
-            value = productTime,
-            onValueChange = { productTime = it },
-            label = { Text(text = "Duration *",
-                fontFamily = FontFamily.SansSerif,
-                fontWeight = FontWeight(100),
-                color = Color.Black,
-                fontSize = 20.sp, ) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = Color.Black,
-                unfocusedTextColor = Color.Black,
-                focusedBorderColor = Color(207, 239, 232, 255),
-                unfocusedBorderColor = Color.Black,
-            ),
-            shape = RoundedCornerShape(25.dp),
-        )
-        Spacer(modifier = Modifier.height(25.dp))
-        OutlinedTextField(
-            value = productResponsibilities,
-            onValueChange = { productResponsibilities = it },
-            label = { Text(text = "Location *",
-                fontFamily = FontFamily.SansSerif,
-                fontWeight = FontWeight(100),
-                color = Color.Black,
-                fontSize = 20.sp, ) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = Color.Black,
-                unfocusedTextColor = Color.Black,
-                focusedBorderColor = Color(207, 239, 232, 255),
-                unfocusedBorderColor = Color.Black,
-            ),
-            shape = RoundedCornerShape(25.dp),
-        )
-        Spacer(modifier = Modifier.height(25.dp))
-        OutlinedTextField(
-            value = productSkills,
-            onValueChange = { productSkills= it },
-            label = { Text(text = "Skills required *",
-                fontFamily = FontFamily.SansSerif,
-                fontWeight = FontWeight(100),
-                color = Color.Black,
-                fontSize = 20.sp, ) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = Color.Black,
-                unfocusedTextColor = Color.Black,
-                focusedBorderColor = Color(207, 239, 232, 255),
-                unfocusedBorderColor = Color.Black,
-            ),
-            shape = RoundedCornerShape(25.dp),
-        )
-        Spacer(modifier = Modifier.height(25.dp))
-        OutlinedTextField(
-            value = productDocus,
-            onValueChange = { productDocus = it },
-            label = { Text(text = "Needed Documents *",
-                fontFamily = FontFamily.SansSerif,
-                fontWeight = FontWeight(100),
-                color = Color.Black,
-                fontSize = 20.sp, ) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = Color.Black,
-                unfocusedTextColor = Color.Black,
-                focusedBorderColor = Color(207, 239, 232, 255),
-                unfocusedBorderColor = Color.Black,
-            ),
-            shape = RoundedCornerShape(25.dp),
-        )
-        OutlinedTextField(
+            OutlinedTextField(
+                value = productLocation,
+                onValueChange = { productLocation = it },
+                label = {
+                    Text(
+                        text = "Location *",
+                        fontFamily = FontFamily.SansSerif,
+                        fontWeight = FontWeight(100),
+                        color = Color.Black,
+                        fontSize = 20.sp,
+                    )
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black,
+                    focusedBorderColor = Color(207, 239, 232, 255),
+                    unfocusedBorderColor = Color.Black,
+                ),
+                shape = RoundedCornerShape(25.dp),
+            )
+            Spacer(modifier = Modifier.height(25.dp))
+            OutlinedTextField(
+                value = productTime,
+                onValueChange = { productTime = it },
+                label = {
+                    Text(
+                        text = "Duration *",
+                        fontFamily = FontFamily.SansSerif,
+                        fontWeight = FontWeight(100),
+                        color = Color.Black,
+                        fontSize = 20.sp,
+                    )
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black,
+                    focusedBorderColor = Color(207, 239, 232, 255),
+                    unfocusedBorderColor = Color.Black,
+                ),
+                shape = RoundedCornerShape(25.dp),
+            )
+            Spacer(modifier = Modifier.height(25.dp))
+            OutlinedTextField(
+                value = productResponsibilities,
+                onValueChange = { productResponsibilities = it },
+                label = {
+                    Text(
+                        text = "Responsibilities *",
+                        fontFamily = FontFamily.SansSerif,
+                        fontWeight = FontWeight(100),
+                        color = Color.Black,
+                        fontSize = 20.sp,
+                    )
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black,
+                    focusedBorderColor = Color(207, 239, 232, 255),
+                    unfocusedBorderColor = Color.Black,
+                ),
+                shape = RoundedCornerShape(25.dp),
+            )
+            Spacer(modifier = Modifier.height(25.dp))
+            OutlinedTextField(
+                value = productSkills,
+                onValueChange = { productSkills = it },
+                label = {
+                    Text(
+                        text = "Skills required *",
+                        fontFamily = FontFamily.SansSerif,
+                        fontWeight = FontWeight(100),
+                        color = Color.Black,
+                        fontSize = 20.sp,
+                    )
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black,
+                    focusedBorderColor = Color(207, 239, 232, 255),
+                    unfocusedBorderColor = Color.Black,
+                ),
+                shape = RoundedCornerShape(25.dp),
+            )
+            Spacer(modifier = Modifier.height(25.dp))
+            OutlinedTextField(
+                value = productDocus,
+                onValueChange = { productDocus = it },
+                label = {
+                    Text(
+                        text = "Needed Documents *",
+                        fontFamily = FontFamily.SansSerif,
+                        fontWeight = FontWeight(100),
+                        color = Color.Black,
+                        fontSize = 20.sp,
+                    )
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black,
+                    focusedBorderColor = Color(207, 239, 232, 255),
+                    unfocusedBorderColor = Color.Black,
+                ),
+                shape = RoundedCornerShape(25.dp),
+            )
+            Spacer(modifier = Modifier.height(25.dp))
+            OutlinedTextField(
                 value = productDeadliine,
-        onValueChange = { productDeadliine = it },
-        label = { Text(text = "Application Deadline *",
-            fontFamily = FontFamily.SansSerif,
-            fontWeight = FontWeight(100),
-            color = Color.Black,
-            fontSize = 20.sp, ) },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedTextColor = Color.Black,
-            unfocusedTextColor = Color.Black,
-            focusedBorderColor = Color(207, 239, 232, 255),
-            unfocusedBorderColor = Color.Black,
-        ),
-        shape = RoundedCornerShape(25.dp),
-        )
-        Spacer(modifier = Modifier.height(30.dp))
+                onValueChange = { productDeadliine = it },
+                label = {
+                    Text(
+                        text = "Application Deadline *",
+                        fontFamily = FontFamily.SansSerif,
+                        fontWeight = FontWeight(100),
+                        color = Color.Black,
+                        fontSize = 20.sp,
+                    )
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black,
+                    focusedBorderColor = Color(207, 239, 232, 255),
+                    unfocusedBorderColor = Color.Black,
+                ),
+                shape = RoundedCornerShape(25.dp),
+            )
+            Spacer(modifier = Modifier.height(20.dp))
 
-        Button(onClick = {
-            //-----------WRITE THE SAVE LOGIC HERE---------------//
-            var productRepository = productviewmodel(navController,context)
-            productRepository.saveProduct(productName.text.trim(),productCompany.text.trim(), productLocation.text.trim(),productTime.text.trim(),productResponsibilities.text.trim(),productSkills.text.trim(),productDocus.text.trim(),productDeadliine.text.trim())
-        },
-            colors = ButtonDefaults.buttonColors(
-                contentColor = Color.Black,
-                containerColor = Color(158, 210, 190)
-            ),
-        ) {
-            Text(text = "Save",
-                style = TextStyle(letterSpacing = 2.sp),
-                fontFamily = FontFamily.SansSerif,
-                fontWeight = FontWeight(300),
-                color = Color.Black,
-                fontSize = 20.sp,)
+            Button(
+                onClick = {
+                    //-----------WRITE THE SAVE LOGIC HERE---------------//
+                    var productRepository = productviewmodel(navController, context)
+                    productRepository.saveProduct(
+                        productName.text.trim(),
+                        productCompany.text.trim(),
+                        productLocation.text.trim(),
+                        productTime.text.trim(),
+                        productResponsibilities.text.trim(),
+                        productSkills.text.trim(),
+                        productDocus.text.trim(),
+                        productDeadliine.text.trim()
+                    )
+                },
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = Color.Black,
+                    containerColor = Color(158, 210, 190)
+                ),
+                modifier = Modifier.padding(bottom = 10.dp)
+            ) {
+                Text(
+                    text = "Save",
+                    style = TextStyle(letterSpacing = 2.sp),
+                    fontFamily = FontFamily.SansSerif,
+                    fontWeight = FontWeight(300),
+                    color = Color.Black,
+                    fontSize = 20.sp,
+                )
+            }
         }
-
     }
-}
+
 
 @Preview
 @Composable

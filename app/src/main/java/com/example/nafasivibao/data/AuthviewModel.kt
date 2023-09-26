@@ -10,6 +10,7 @@ import com.example.nafasivibao.models.User
 import com.example.nafasivibao.navigation.ROUTE_HOME
 import com.example.nafasivibao.navigation.ROUTE_LOGIN
 import com.example.nafasivibao.navigation.ROUTE_REGISTER
+import com.example.nafasivibao.navigation.ROUTE_VIEWADDED
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -77,6 +78,23 @@ class AuthViewModel(var navController:NavHostController, var context:Context){
         }
 
     }
+    fun Access(){
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser != null) {
+            val allowedUsername = "coms"
+            val userEmail = currentUser.email
+
+            if (userEmail == "$allowedUsername@gmail.com") {
+                navController.navigate(ROUTE_VIEWADDED)
+            } else {
+                Toast.makeText(context,"No authorisation",Toast.LENGTH_LONG).show()
+                return
+            }
+        } else {
+            navController.navigate(ROUTE_LOGIN)
+        }
+        }
+
     fun logout(){
         mAuth.signOut()
         navController.navigate(ROUTE_LOGIN)

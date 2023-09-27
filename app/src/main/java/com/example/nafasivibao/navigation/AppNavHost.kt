@@ -1,5 +1,6 @@
 package com.example.nafasivibao.navigation
 
+import android.media.tv.TvContract.Channels.Logo
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -12,8 +13,10 @@ import com.example.nafasivibao.BottomNavy
 import com.example.nafasivibao.ui.theme.screens.contactcompany.ContactCompanyScreen
 import com.example.nafasivibao.ui.theme.screens.home.Homescreen
 import com.example.nafasivibao.ui.theme.screens.login.LoginScreen
+import com.example.nafasivibao.ui.theme.screens.logout.LogoutScreen
 import com.example.nafasivibao.ui.theme.screens.postedscreen.PostedScreen
 import com.example.nafasivibao.ui.theme.screens.product.AddProductsScreen
+import com.example.nafasivibao.ui.theme.screens.product.UpdateScreen
 import com.example.nafasivibao.ui.theme.screens.product.ViewProductsScreen
 import com.example.nafasivibao.ui.theme.screens.profile.ProfileScreen
 import com.example.nafasivibao.ui.theme.screens.register.RegisterScreen
@@ -38,8 +41,8 @@ fun AppNavHost(modifier: Modifier= Modifier, navController:NavHostController= re
         composable(ROUTE_PROFILE){
            ProfileScreen(navController)
         }
-        composable(ROUTE_UPDATE){
-            ProfileScreen(navController)
+        composable(ROUTE_LOGOUT){
+            LogoutScreen(navController)
         }
         composable(ROUTE_SPLASH){
             ViewProductsScreen(navController)
@@ -56,8 +59,8 @@ fun AppNavHost(modifier: Modifier= Modifier, navController:NavHostController= re
         composable(ROUTE_VIEWPOSTED) {
             PostedScreen(navController)
         }
-        composable(ROUTE_BOTTOMNAVY) {
-            BottomNavy(navController)
+        composable(ROUTE_UPDATE+ "/{id}"){passedData->
+            UpdateScreen(navController,passedData.arguments?.getString("id")!!)
         }
     }
 

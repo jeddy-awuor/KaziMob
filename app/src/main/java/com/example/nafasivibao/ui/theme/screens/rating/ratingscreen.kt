@@ -24,10 +24,10 @@ fun RatingScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(bottom = 16.dp, start = 10.dp)
     ) {
-        Text(text = "Rate this app:",
-            color = Color.Black)
+        Text(text = "Rate our app:",
+            color = Color(68, 69, 74),)
         Spacer(modifier = Modifier.height(8.dp))
         RatingBarWithSnackbar(
             rating = rating,

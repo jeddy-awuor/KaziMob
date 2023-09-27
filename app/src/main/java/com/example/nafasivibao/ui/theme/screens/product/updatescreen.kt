@@ -1,13 +1,13 @@
 package com.example.nafasivibao.ui.theme.screens.product
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -16,14 +16,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.RemoveRedEye
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.AddCircleOutline
 import androidx.compose.material.icons.outlined.ExitToApp
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.PermIdentity
-import androidx.compose.material.icons.outlined.RemoveRedEye
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Button
@@ -52,25 +48,28 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
+
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.nafasivibao.BottomNavigationItem
-
 import com.example.nafasivibao.data.productviewmodel
+import com.example.nafasivibao.models.Product
 import com.example.nafasivibao.navigation.ROUTE_ABOUT
 import com.example.nafasivibao.navigation.ROUTE_HOME
 import com.example.nafasivibao.navigation.ROUTE_LOGOUT
-import com.example.nafasivibao.navigation.ROUTE_PROFILE
 import com.example.nafasivibao.navigation.ROUTE_VIEWADDED
 import com.example.nafasivibao.ui.theme.MooliFont
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun AddProductsScreen(navController: NavHostController) {
+fun UpdateScreen(navController: NavHostController, id:String) {
     var context = LocalContext.current
     val columnScrollableState = rememberScrollState()
     var selectedItemIndex by rememberSaveable {
@@ -135,33 +134,59 @@ fun AddProductsScreen(navController: NavHostController) {
                     )
                 }
             }
-        }) {
+        }){
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(columnScrollableState)
                 .background(color = Color(251, 243, 235)),
             horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+        ){
             Spacer(modifier = Modifier.height(32.dp))
             Text(
-                text = "Add Opening",
+                text = "Update Opening",
                 style = TextStyle(letterSpacing = 2.sp),
                 fontFamily = MooliFont,
-                fontWeight = FontWeight(300),
+                fontWeight = FontWeight(200),
                 color = Color(68, 69, 74),
-                fontSize = 33.sp,
+                fontSize = 28.sp,
+
             )
+            var Name by remember { mutableStateOf("") }
+            var Company by remember { mutableStateOf("") }
+            var Time by remember { mutableStateOf("") }
+            var Responsibilities by remember { mutableStateOf("") }
+            var Skills by remember { mutableStateOf("") }
+            var Docus by remember { mutableStateOf("") }
+            var Deadliine by remember { mutableStateOf("") }
+            var Location by remember { mutableStateOf("") }
+            var currentDataRef = FirebaseDatabase.getInstance().getReference()
+                .child("Products/$id")
+            currentDataRef.addValueEventListener(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    var product = snapshot.getValue(Product::class.java)
+                   Name = product!!.name
+                    Company = product!!.company
+                    Time = product!!.time
+                    Responsibilities= product!!.responsibilities
+                   Skills= product!!.skills
+                    Docus= product!!.docs
+                   Deadliine = product!!.deadline
+                  Location = product!!.location
+                }
 
-            var productName by remember { mutableStateOf(TextFieldValue("")) }
-            var productCompany by remember { mutableStateOf(TextFieldValue("")) }
-            var productTime by remember { mutableStateOf(TextFieldValue("")) }
-            var productResponsibilities by remember { mutableStateOf(TextFieldValue("")) }
-            var productSkills by remember { mutableStateOf(TextFieldValue("")) }
-            var productDocus by remember { mutableStateOf(TextFieldValue("")) }
-            var productDeadliine by remember { mutableStateOf(TextFieldValue("")) }
-            var productLocation by remember { mutableStateOf(TextFieldValue("")) }
-
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
+                }
+            })
+            var productName by remember { mutableStateOf(TextFieldValue(Name)) }
+            var productCompany by remember { mutableStateOf(TextFieldValue(Company)) }
+            var productTime by remember { mutableStateOf(TextFieldValue(Time)) }
+            var productResponsibilities by remember { mutableStateOf(TextFieldValue(Responsibilities)) }
+            var productSkills by remember { mutableStateOf(TextFieldValue(Skills)) }
+            var productDocus by remember { mutableStateOf(TextFieldValue(Docus)) }
+            var productDeadliine by remember { mutableStateOf(TextFieldValue(Deadliine)) }
+            var productLocation by remember { mutableStateOf(TextFieldValue(Location)) }
             Spacer(modifier = Modifier.height(20.dp))
 
             OutlinedTextField(
@@ -347,9 +372,9 @@ fun AddProductsScreen(navController: NavHostController) {
 
             Button(
                 onClick = {
-                    //-----------WRITE THE SAVE LOGIC HERE---------------//
+                    //-----------WRITE THE UPDATE LOGIC HERE---------------//
                     var productRepository = productviewmodel(navController, context)
-                    productRepository.saveProduct(
+                    productRepository.updateProduct(
                         productName.text.trim(),
                         productCompany.text.trim(),
                         productLocation.text.trim(),
@@ -357,7 +382,7 @@ fun AddProductsScreen(navController: NavHostController) {
                         productResponsibilities.text.trim(),
                         productSkills.text.trim(),
                         productDocus.text.trim(),
-                        productDeadliine.text.trim()
+                        productDeadliine.text.trim(),id
                     )
                 },
                 colors = ButtonDefaults.buttonColors(
@@ -365,9 +390,9 @@ fun AddProductsScreen(navController: NavHostController) {
                     containerColor = Color(239, 100, 85)
                 ),
                 modifier = Modifier.padding(bottom = 90.dp)
-            ) {
+            ){
                 Text(
-                    text = "Save",
+                    text = "Update",
                     style = TextStyle(letterSpacing = 2.sp),
                     fontFamily = MooliFont,
                     fontWeight = FontWeight(300),
@@ -375,13 +400,8 @@ fun AddProductsScreen(navController: NavHostController) {
                     fontSize = 20.sp,
                 )
             }
+
         }
-    }
 
     }
-@Preview
-@Composable
-fun Addpr() {
-    AddProductsScreen(rememberNavController())
-
 }

@@ -355,21 +355,9 @@ fun MyDialButton() {
 
     IconButton(
         onClick = {
-            val intent = Intent(Intent.ACTION_CALL, android.net.Uri.parse("tel:" + "+254710388141"))
-
-            if (ContextCompat.checkSelfPermission(
-                    context,
-                    android.Manifest.permission.CALL_PHONE
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    context as Activity,
-                    arrayOf(android.Manifest.permission.CALL_PHONE),
-                    1
-                )
-            } else {
-                context.startActivity(intent)
-            }
+            val phone = "+254710388411"
+            val intent = Intent(Intent.ACTION_DIAL, android.net.Uri.fromParts("tel", phone, null))
+            context.startActivity(intent)
         },
         modifier = Modifier
             .offset(x = 10.dp)

@@ -26,7 +26,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Call
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Mail
 import androidx.compose.material.icons.filled.Person
@@ -34,6 +36,8 @@ import androidx.compose.material.icons.filled.RemoveRedEye
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.AddCircleOutline
+import androidx.compose.material.icons.outlined.ExitToApp
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.PermIdentity
 import androidx.compose.material.icons.outlined.RemoveRedEye
@@ -41,6 +45,7 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardDefaults.cardColors
@@ -78,9 +83,13 @@ import com.example.nafasivibao.BottomNavigationItem
 import com.example.nafasivibao.R
 import com.example.nafasivibao.navigation.ROUTE_ABOUT
 import com.example.nafasivibao.navigation.ROUTE_HOME
+import com.example.nafasivibao.navigation.ROUTE_LOGOUT
 import com.example.nafasivibao.navigation.ROUTE_PROFILE
 import com.example.nafasivibao.navigation.ROUTE_VIEWADDED
 import com.example.nafasivibao.navigation.ROUTE_VIEWCOMP
+import com.example.nafasivibao.ui.theme.MooliFont
+import com.example.nafasivibao.ui.theme.screens.contactcompany.MyDialButton
+import com.example.nafasivibao.ui.theme.screens.contactcompany.MyInstaButton
 import com.example.nafasivibao.ui.theme.screens.home.Homescreen
 import com.example.nafasivibao.ui.theme.screens.rating.RatingBarWithSnackbar
 import com.example.nafasivibao.ui.theme.screens.rating.RatingScreen
@@ -110,21 +119,20 @@ fun AboutScreen(navController: NavHostController) {
         ),
         BottomNavigationItem(
             title = ROUTE_VIEWADDED,
-            selectedIcon = Icons.Filled.RemoveRedEye,
-            unselectedIcon = Icons.Outlined.RemoveRedEye,
+            selectedIcon = Icons.Filled.Add,
+            unselectedIcon = Icons.Outlined.AddCircleOutline,
             hasNews = false,
-        ),
-        BottomNavigationItem(
-            title = ROUTE_PROFILE,
-            selectedIcon = Icons.Filled.Person,
-            unselectedIcon = Icons.Outlined.PermIdentity,
-            hasNews = false,
-            badgeCount = 45
         ),
         BottomNavigationItem(
             title = ROUTE_ABOUT,
             selectedIcon = Icons.Filled.Settings,
             unselectedIcon = Icons.Outlined.Settings,
+            hasNews = false,
+        ),
+        BottomNavigationItem(
+            title = ROUTE_LOGOUT,
+            selectedIcon = Icons.Filled.ExitToApp,
+            unselectedIcon = Icons.Outlined.ExitToApp,
             hasNews = false,
         ),
     )
@@ -166,14 +174,14 @@ fun AboutScreen(navController: NavHostController) {
             modifier = Modifier
                 .padding(bottom = 50.dp)
                 .fillMaxSize()
-                .background(color = Color(243, 253, 232)),
+                .background(color = Color(251, 243, 235)),
             horizontalAlignment = Alignment.CenterHorizontally,
 
         ){
             OutlinedCard(onClick = { /*TODO*/ },
                 modifier = Modifier.padding(start =20.dp, bottom = 40.dp, end = 20.dp, top = 20.dp) ,
                 colors = cardColors(
-                        containerColor = Color(243, 253, 232)),
+                        containerColor = Color(255, 159, 65)),
             )
              {
                TutorialCardContentt()
@@ -203,19 +211,20 @@ fun TutorialCardContentt() {
                 .clip(shape = CircleShape)
                 .size(100.dp)
         )
-        Text(text = "About our app", fontSize = 22.sp, fontWeight = FontWeight.Bold,  color = Color.Black)
+        Text(text = "About our app", fontSize = 22.sp, fontWeight = FontWeight.Bold, fontFamily = MooliFont  ,color = Color(68, 69, 74),)
         Text(text =
-                "Nafasi means opportunity or opening  in Swahili while 'Kibao' means plenty ot alot.When combined, \"Nafasi Kibao\" conveys the idea of an abundance of opportunities or job openings. It's a descriptive and engaging term, particularly suitable for this app that aims to connect job seekers with a wide range of available job opportunities, highlighting the wealth of choices and possibilities for users  ",
+                "Nafasi means opportunity or opening  in Swahili while 'Kibao' means plenty or a lot.When combined, \"Nafasi Kibao\" conveys the idea of an abundance of opportunities or job openings. It's a descriptive and engaging term, particularly suitable for this app that aims to connect job seekers with a wide range of available job opportunities, highlighting the wealth of choices and possibilities for users  ",
             fontSize = 16.sp,
-            color = Color.Black)
+            color = Color(68, 69, 74),)
         Text(text = "\"Nafasi Kibao\" is your gateway to a world of limitless opportunities. Our app is your trusted companion on the journey to finding your dream job or discovering exciting career paths.\n" +
                 "With Nafasi Kibao, you have access to an extensive and diverse array of job openings that cater to your unique skills, interests, and ambitions. Whether you're a seasoned professional looking to advance your career or a fresh graduate eager to take your first step into the professional world, Nafasi Kibao is here to help.",
             fontSize = 16.sp,
-            color = Color.Black)
+            color = Color(68, 69, 74),)
+        Spacer(modifier = Modifier.height(5.dp))
         Row(modifier = Modifier
             .fillMaxWidth()
             .padding(start = 1.dp)) {
-            OutlinedButton(onClick = {
+            Button(onClick = {
                 val shareIntent = Intent(Intent.ACTION_SEND)
 
                 shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -225,7 +234,11 @@ fun TutorialCardContentt() {
                 shareIntent.putExtra(Intent.EXTRA_TEXT, "Hey, download this app!")
 
                 context.startActivity(shareIntent)
-            }) {
+            },
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = Color.Black,
+                    containerColor = Color(239, 100, 85)
+                ),) {
                 Icon(
                 imageVector = Icons.Default.Mail,
                 contentDescription = null,
@@ -236,6 +249,58 @@ fun TutorialCardContentt() {
                 Spacer(modifier = Modifier.width(5.dp))
                 Text(text = "Share the app")
             }
+        }
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 10.dp)
+            ) {
+                Text(
+                    text = "Get in touch with us :",
+                    color = Color.Black
+                )
+            }
+            Spacer(modifier = Modifier.height(30.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 13.dp, bottom = 30.dp)
+            ) {
+
+                IconButton(
+                    onClick = {
+                        val emailIntent =
+                            Intent(Intent.ACTION_SENDTO, android.net.Uri.fromParts("mailto", "jeddy@gmail.com", null))
+
+                        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject")
+
+                        emailIntent.putExtra(Intent.EXTRA_TEXT, "Body")
+
+                        context.startActivity(Intent.createChooser(emailIntent, "Send email..."))
+                    },
+                    modifier = Modifier
+                        .offset(x = 10.dp)
+                        .size(20.dp) // Adjust the size as needed
+                        .border(0.dp, Color.Black, CircleShape)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Mail,
+                        contentDescription = null,
+                        tint = Color.Black
+                    )
+                }
+                Spacer(modifier = Modifier.width(50.dp))
+                MyInstaButton()
+                Spacer(modifier = Modifier.width(50.dp))
+                MyDialButton()
+
+            }
+
         }
        RatingScreen()
     }

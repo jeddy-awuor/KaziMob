@@ -2,6 +2,8 @@
 
 package com.example.nafasivibao.ui.theme.screens.product
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,6 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -50,6 +53,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import android.net.Uri
+import android.widget.Toast
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 
@@ -58,7 +63,7 @@ import com.example.nafasivibao.models.Product
 import com.example.nafasivibao.navigation.ROUTE_UPDATE
 import com.example.nafasivibao.navigation.ROUTE_VIEWADDED
 import com.example.nafasivibao.navigation.ROUTE_VIEWCOMP
-
+import com.google.firebase.auth.FirebaseAuth
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -128,6 +133,7 @@ fun ProductItem(
     navController: NavHostController,
     productRepository: productviewmodel
 ) {
+    val context: Context = LocalContext.current
     Spacer(modifier = Modifier.height(3.dp))
     var isCardExpanded by remember { mutableStateOf(false) }
     ElevatedCard(
@@ -135,19 +141,23 @@ fun ProductItem(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 25.dp
         ),
+        modifier = Modifier.padding(bottom = 15.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color.Magenta,
+            containerColor = Color(255, 159, 65),
         )
     ) {
 
         Spacer(modifier = Modifier.height(15.dp))
         Text(
-            text = name, fontSize = 22.sp, fontWeight = FontWeight.Bold,
+            color = Color(68, 69, 74),
+            text = name, fontSize = 22.sp, 
+            fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(start = 10.dp)
         )
         Spacer(modifier = Modifier.height(5.dp))
         Text(
             text = company,
+            color = Color(68, 69, 74),
             fontSize = 16.sp,
             fontWeight = FontWeight(400),
             modifier = Modifier.padding(start = 10.dp)
@@ -155,6 +165,7 @@ fun ProductItem(
         Spacer(modifier = Modifier.height(5.dp))
         Text(
             text = location,
+            color = Color(68, 69, 74),
             fontSize = 15.sp,
             fontWeight = FontWeight(300),
             modifier = Modifier.padding(start = 10.dp)
@@ -162,6 +173,7 @@ fun ProductItem(
         Spacer(modifier = Modifier.height(5.dp))
         Text(
             text = duration,
+            color = Color(68, 69, 74),
             fontSize = 15.sp,
             fontWeight = FontWeight(200),
             modifier = Modifier.padding(start = 10.dp)
@@ -287,13 +299,53 @@ fun ProductItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 10.dp)
+                .padding(start = 10.dp, bottom= 9.dp)
         ) {
-            OutlinedButton(onClick = { }) { Text(text = "Send CV") }
-            Spacer(modifier = Modifier.padding(horizontal = 3.dp))
-            OutlinedButton(onClick = {productRepository.deleteProduct(id)}) { Text(text = "delete") }
-            Spacer(modifier = Modifier.padding(horizontal = 3.dp))
-            OutlinedButton(onClick = { ROUTE_VIEWCOMP }) { Text(text = "update") }
+            Button(onClick = {
+                val companyname =company.replace(" ", "")
+                val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "$companyname@gmail.com", null))
+
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject")
+
+                emailIntent.putExtra(Intent.EXTRA_TEXT, "Body")
+
+                context.startActivity(Intent.createChooser(emailIntent, "Send email...")) },
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = Color.Black,
+                    containerColor = Color(239, 100, 85)
+                ),
+                )
+            { Text(text = "Send CV") }
+            Spacer(modifier = Modifier.padding(horizontal = 5.dp))
+            Button(onClick = {
+                val currentUser = FirebaseAuth.getInstance().currentUser
+                val userEmail = currentUser?.email
+                if (userEmail == "coms@gmail.com") {
+                    productRepository.deleteProduct(id)
+                }else{
+                    Toast.makeText(context, "Sorry, only the admin can delete this.", Toast.LENGTH_SHORT).show()
+                }},
+                    colors = ButtonDefaults.buttonColors(
+                    contentColor = Color.Black,
+                containerColor = Color(239, 100, 85)
+            ),)
+            { Text(text = "delete") }
+
+            Spacer(modifier = Modifier.padding(horizontal = 5.dp))
+
+            Button(onClick ={
+                val currentUser = FirebaseAuth.getInstance().currentUser
+                val userEmail = currentUser?.email
+                if (userEmail == "coms@gmail.com") {
+                    navController.navigate(ROUTE_UPDATE+"/$id")
+                }else{
+                    Toast.makeText(context, "Sorry, only the admin can update this.", Toast.LENGTH_SHORT).show()
+                }},
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = Color.Black,
+                    containerColor = Color(239, 100, 85)
+                ),
+                ) { Text(text = "update") }
         }
     }
 }

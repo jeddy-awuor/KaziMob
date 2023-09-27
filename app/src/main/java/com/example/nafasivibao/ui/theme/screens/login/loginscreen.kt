@@ -63,14 +63,14 @@ fun LoginScreen(navController: NavHostController) {
 
 
         ) {
-        Spacer(modifier = Modifier.height(25.dp))
+        Spacer(modifier = Modifier.height(30.dp))
         Text(
             text = " Welcome Back ! ",
             modifier = Modifier.padding(top= 3.dp),
-            fontFamily = FontFamily.Cursive,
+            fontFamily = MooliFont ,
             fontWeight = FontWeight(400),
             color = Color(68, 69, 74),
-            fontSize = 35.sp,
+            fontSize = 32.sp,
         )
         Image(painter = painterResource(id = R.drawable.jobhhunting) ,
             contentDescription = "sitting",

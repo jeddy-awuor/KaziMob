@@ -89,13 +89,6 @@ fun LogoutScreen(navController: NavHostController) {
             hasNews = false,
         ),
         BottomNavigationItem(
-            title = ROUTE_PROFILE,
-            selectedIcon = Icons.Filled.Person,
-            unselectedIcon = Icons.Outlined.PermIdentity,
-            hasNews = false,
-            badgeCount = 45
-        ),
-        BottomNavigationItem(
             title = ROUTE_ABOUT,
             selectedIcon = Icons.Filled.Settings,
             unselectedIcon = Icons.Outlined.Settings,

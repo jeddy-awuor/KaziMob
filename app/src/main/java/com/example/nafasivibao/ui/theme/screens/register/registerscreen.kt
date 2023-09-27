@@ -72,13 +72,13 @@ fun RegisterScreen(navController: NavHostController) {
         verticalArrangement = Arrangement.Top
 
     ) {
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(30.dp))
 
         Text(
-            text = "  Create Your Account ",
-            fontFamily = FontFamily.Cursive,
+            text = " Create Your Account ",
+            fontFamily = MooliFont ,
             color = Color(68, 69, 74),
-            fontSize = 35.sp,
+            fontSize = 32.sp,
         )
         Spacer(modifier = Modifier.height(20.dp))
 

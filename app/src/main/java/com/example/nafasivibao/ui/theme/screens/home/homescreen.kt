@@ -196,11 +196,23 @@ fun Homescreen(navController: NavHostController) {
             val currentUser = FirebaseAuth.getInstance().currentUser
             val userEmail = currentUser?.email
             Row(modifier = Modifier.padding(bottom = 5.dp)){
-                Text(text = "Welcome $userEmail",
-                    fontSize = 22.sp,
-                    color = Color(68, 69, 74),
-                    fontFamily =  MooliFont,
-                    fontWeight = FontWeight.Bold)
+               if(userEmail == "coms@gmail.com") {
+                   Text(
+                       text = "Welcome Admin",
+                       fontSize = 22.sp,
+                       color = Color(68, 69, 74),
+                       fontFamily = MooliFont,
+                       fontWeight = FontWeight.Bold
+                   )
+               }else{
+                   Text(
+                       text = "Welcome, $userEmail",
+                       fontSize = 22.sp,
+                       color = Color(68, 69, 74),
+                       fontFamily = MooliFont,
+                       fontWeight = FontWeight.Bold
+                   )
+               }
             }
             LazyColumn(modifier = Modifier
                 .padding(start = 20.dp, end = 20.dp, bottom = 85.dp,),
